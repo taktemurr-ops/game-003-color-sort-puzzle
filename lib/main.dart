@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'game/color_sort_game.dart';
+import 'game/sort_levels.dart';
 
 void main() => runApp(const ColorSortPuzzle());
 
@@ -23,7 +24,8 @@ class ColorSortScreen extends StatefulWidget {
 }
 
 class _ColorSortScreenState extends State<ColorSortScreen> {
-  ColorSortGame game = ColorSortGame.demo();
+  int levelIndex = 0;
+  ColorSortGame game = ColorSortGame(SortLevels.get(0));
   int? source;
   String feedback = 'Choose a tube, then a destination.';
 
@@ -53,6 +55,16 @@ class _ColorSortScreenState extends State<ColorSortScreen> {
       feedback = moved
           ? game.solved ? 'Well done — puzzle solved!' : 'One ball moved.'
           : 'Invalid move.';
+    });
+  }
+
+  void loadLevel(int index) {
+    if (index < 0 || index >= SortLevels.count) return;
+    setState(() {
+      levelIndex = index;
+      game = ColorSortGame(SortLevels.get(levelIndex));
+      source = null;
+      feedback = 'Level ${levelIndex + 1}: sort each color into a full tube.';
     });
   }
 
@@ -98,6 +110,7 @@ class _ColorSortScreenState extends State<ColorSortScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Color Sort Puzzle')),
+        
     body: SafeArea(child: Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 600),
@@ -106,6 +119,19 @@ class _ColorSortScreenState extends State<ColorSortScreen> {
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text('Moves: ${game.moves}',
               style: Theme.of(context).textTheme.headlineMedium),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              IconButton(
+                onPressed: levelIndex > 0 ? () => loadLevel(levelIndex - 1) : null,
+                icon: const Icon(Icons.chevron_left),
+                tooltip: 'Previous level',
+              ),
+              Text('Level ${levelIndex + 1} / ${SortLevels.count}'),
+              IconButton(
+                onPressed: levelIndex + 1 < SortLevels.count ? () => loadLevel(levelIndex + 1) : null,
+                icon: const Icon(Icons.chevron_right),
+                tooltip: 'Next level',
+              ),
+            ]),
             const SizedBox(height: 24),
             Wrap(spacing: 24, runSpacing: 22,
               alignment: WrapAlignment.center,
@@ -126,7 +152,7 @@ class _ColorSortScreenState extends State<ColorSortScreen> {
               ),
               FilledButton.icon(
                 onPressed: () => setState(() {
-                  game = ColorSortGame.demo();
+                  game = ColorSortGame(SortLevels.get(levelIndex));
                   source = null;
                   feedback = 'Level restarted.';
                 }),
