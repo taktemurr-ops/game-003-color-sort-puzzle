@@ -24,4 +24,13 @@ void main() {
     expect(ColorSortGame([[1, 1, 1, 1], []]).solved, true);
     expect(ColorSortGame([[1, 1], []]).solved, false);
   });
+  test('legal move hints do not mutate the board', () {
+    final game = ColorSortGame([[1], [], [2]]);
+    final before = game.tubes.map((t) => List<int>.from(t)).toList();
+    expect(game.legalMoves, contains((0, 1)));
+    expect(game.legalMoves, isNot(contains((0, 2))));
+    expect(game.tubes, before);
+    expect(game.moves, 0);
+  });
+
 }
