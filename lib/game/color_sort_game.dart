@@ -17,6 +17,17 @@ class ColorSortGame {
     [0, 1, 0, 1], [1, 0, 1, 0], [],
   ]);
 
+  /// Legal source/destination pairs for hint UI; does not mutate game state.
+  List<(int, int)> get legalMoves {
+    final result = <(int, int)>[];
+    for (var from = 0; from < tubes.length; from++) {
+      for (var to = 0; to < tubes.length; to++) {
+        if (canMove(from, to)) result.add((from, to));
+      }
+    }
+    return result;
+  }
+
   bool canMove(int from, int to) {
     if (from == to || from < 0 || to < 0 || from >= tubes.length || to >= tubes.length) {
       return false;
