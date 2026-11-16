@@ -91,7 +91,7 @@ class _ColorSortScreenState extends State<ColorSortScreen> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: balls.reversed.map((ball) => Container(
+              children: balls.map((ball) => Container(
                 width: 39, height: 39,
                 margin: const EdgeInsets.symmetric(vertical: 1),
                 decoration: BoxDecoration(
