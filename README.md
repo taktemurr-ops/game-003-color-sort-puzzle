@@ -1,29 +1,32 @@
 # Color Sort Puzzle
 
-Game Studio 100 | Bulmaca ve Zeka | Flutter + Flame | Android + iOS
+Game Studio 100 | Flutter | Android + iOS
 
-## Product strategy
-Combine useful modes and mechanisms of competing games into one cohesive,
-distinctive, legally independent game. Competitive features are research
-candidates, NOT confirmed implementations.
+## Implemented prototype
+- Tap a source and destination tube to move one top ball
+- Matching-color and four-ball capacity validation
+- Move counter, undo history, solved-state detection and restart
+- Pure Dart rules engine: `lib/game/color_sort_game.dart`
+- Rules tests: `test/color_sort_game_test.dart`
+- Playable Flutter screen: `lib/main.dart`
 
-## MVP
-- Reliable core gameplay loop with pause/resume, save, audio and settings
-- Guided onboarding, session metrics and accessibility considerations
-- Levels or escalating difficulty; progress and achievements
-- Ad and IAP adapters (disabled until fully configured and tested)
-- Android/iOS release preparation and privacy requirements
+This differs from Water Sort Universe: **one ball per move**, instead of
+pouring a contiguous same-color liquid group.
 
-## Later releases
-- Additional game modes and mechanics after competitor analysis
-- Events, daily challenges, cosmetics, social or leaderboard features where suitable
-- Analytics and A/B tests for retention, difficulty and ad frequency
+## Verify locally
+```bash
+flutter pub get
+flutter test
+flutter run
+```
 
-## Acceptance
-- Deterministic rule tests and device performance verification
-- Game plays without crashes; save/load retains progress
-- Offline play where the mode does not require a network
-- Ads never interrupt an active gameplay turn
-- Store policy, privacy consent and purchase restore checks
+The code has been committed to GitHub; build and tests were **not run** in this
+ChatGPT session. Demo level, art and UI are development prototypes, not release
+quality.
 
-See docs for feature backlog, research method, revenue plan and roadmap.
+## Roadmap
+- Animation and drag/tap input polish
+- Generated levels with solver validation
+- Classic, timed, limited-move and zen modes
+- Save/resume and hints
+- Accessibility, localization, analytics and privacy-safe monetization
