@@ -25,7 +25,7 @@ class RewardClaimGate {
     if (!userOptedIn ||
         accountId.trim().isEmpty ||
         placementId.trim().isEmpty ||
-        receiptId.trim().isEmpty) return false;
+        receiptId.trim().isEmpty) { return false; }
     final key = '${accountId.length}:$accountId|${placementId.length}:$placementId|$receiptId';
     if (_claimed.contains(key) || !_pending.add(key)) { return false; }
     try {
@@ -34,7 +34,7 @@ class RewardClaimGate {
         placementId: placementId,
         receiptId: receiptId,
       );
-      if (!verified) return false;
+      if (!verified) { return false; }
       _claimed.add(key);
       return true;
     } catch (_) {
