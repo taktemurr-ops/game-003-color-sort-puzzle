@@ -1,32 +1,21 @@
-# Color Sort Puzzle
+# Game 003 – Color Sort Puzzle
 
-Game Studio 100 | Flutter | Android + iOS
+A Flutter 3.3+ offline-friendly **ball sorting** game with 120 reproducible, solver-checked levels.
+Each valid move transports **exactly one** colored ball to an empty tube or a tube whose top ball matches.
 
-## Implemented prototype
-- Tap a source and destination tube to move one top ball
-- Matching-color and four-ball capacity validation
-- Move counter, undo history, solved-state detection and restart
-- Pure Dart rules engine: `lib/game/color_sort_game.dart`
-- Rules tests: `test/color_sort_game_test.dart`
-- Playable Flutter screen: `lib/main.dart`
+## Implemented in source
+- Classic, timed (180 s), daily (UTC) and Zen campaigns
+- Bounded shortest-path hints and reversible moves
+- 120 deterministic puzzles and independent completion checks
+- Local auto-save, continue, best moves, progress and erase-all
+- Turkish, English and Arabic UI; accessibility labels and touch targets
+- Animated glossy balls and responsive bottle layout
+- Local-only privacy default, no enabled tracking or paid SDK
+- Unit and widget tests, Android quality CI and unsigned release compile workflow
 
-This differs from Water Sort Universe: **one ball per move**, instead of
-pouring a contiguous same-color liquid group.
+## Development validation
+Run `flutter pub get && flutter analyze --fatal-infos && flutter test` and then
+`flutter build apk --debug`. On macOS, validate iOS using `flutter build ios --no-codesign`.
 
-## Verify locally
-```bash
-flutter pub get
-flutter test
-flutter run
-```
-
-The code has been committed to GitHub; build and tests were **not run** in this
-ChatGPT session. Demo level, art and UI are development prototypes, not release
-quality.
-
-## Roadmap
-- Animation and drag/tap input polish
-- Generated levels with solver validation
-- Classic, timed, limited-move and zen modes
-- Save/resume and hints
-- Accessibility, localization, analytics and privacy-safe monetization
+**Not release-ready:** real emulator/device tests, signing, full content art/audio, store assets, actual privacy forms, SDK-verified ads/IAP and live publisher review are not confirmed.
+Never close issue #1 without independent evidence.

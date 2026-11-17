@@ -1,11 +1,12 @@
-name: Flutter quality and Android debug build
+name: Flutter static analysis, tests, Android debug
 on:
   push:
     branches: [main]
   pull_request:
 jobs:
-  analyze-test-build:
+  quality-and-android:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     permissions:
       contents: read
     steps:
@@ -13,20 +14,21 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - name: Generate missing Android/iOS project scaffolds
+          cache: true
+      - name: Generate mobile platform scaffolds
         run: flutter create --platforms=android,ios --project-name game_003_color_sort_puzzle .
-      - name: Resolve dependencies
+      - name: Get dependencies
         run: flutter pub get
-      - name: Analyze Dart source
-        run: flutter analyze
-      - name: Run unit and widget tests
-        run: flutter test
-      - name: Build Android debug APK
+      - name: Analyze source
+        run: flutter analyze --fatal-infos
+      - name: All Flutter tests
+        run: flutter test --reporter expanded
+      - name: Android debug APK
         run: flutter build apk --debug
-      - name: Publish debug APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: game-003-color-sort-puzzle-debug-apk
+          name: game-003-android-debug
           path: build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
           retention-days: 7

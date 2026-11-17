@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/monetization/entitlement_ledger.dart';
+import 'package:game_003_color_sort_puzzle/monetization/entitlement_ledger.dart';
 void main() {
   test('unverified and mismatched purchases never unlock', () {
     final ledger = EntitlementLedger('user-a');

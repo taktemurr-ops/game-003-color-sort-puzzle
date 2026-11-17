@@ -27,7 +27,7 @@ class RewardClaimGate {
         placementId.trim().isEmpty ||
         receiptId.trim().isEmpty) return false;
     final key = '${accountId.length}:$accountId|${placementId.length}:$placementId|$receiptId';
-    if (_claimed.contains(key) || !_pending.add(key)) return false;
+    if (_claimed.contains(key) || !_pending.add(key)) { return false; }
     try {
       final verified = await verifier.verify(
         accountId: accountId,

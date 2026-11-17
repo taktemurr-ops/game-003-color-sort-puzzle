@@ -1,0 +1,45 @@
+name: Release compilation validation (unsigned)
+on:
+  workflow_dispatch:
+  pull_request:
+jobs:
+  android-aab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Materialize Android project
+        run: flutter create --platforms=android,ios --project-name game_003_color_sort_puzzle .
+      - run: flutter pub get
+      - run: flutter analyze --fatal-infos
+      - run: flutter test
+      - name: Android release build (not Play-signed)
+        run: flutter build appbundle --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game-003-android-release-unsigned
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+  ios-unsigned:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Materialize iOS project
+        run: flutter create --platforms=android,ios --project-name game_003_color_sort_puzzle .
+      - run: flutter pub get
+      - name: iOS device compile (no codesign / IPA)
+        run: flutter build ios --release --no-codesign
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game-003-ios-unsigned-runner
+          path: build/ios/iphoneos/Runner.app/**
+          if-no-files-found: error

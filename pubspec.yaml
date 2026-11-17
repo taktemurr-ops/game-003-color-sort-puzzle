@@ -1,13 +1,15 @@
 name: game_003_color_sort_puzzle
 description: Game Studio 100 - Color Sort Puzzle
 publish_to: none
-version: 0.1.0+1
+version: 1.0.0+1
 environment:
   sdk: '>=3.3.0 <4.0.0'
 dependencies:
   flutter:
     sdk: flutter
-  flame: ^1.19.0
+  flutter_localizations:
+    sdk: flutter
+  shared_preferences: ^2.5.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
