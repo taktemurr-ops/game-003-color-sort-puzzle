@@ -1,21 +1,58 @@
-# Game 003 – Color Sort Puzzle
+# Renkli Top Sıralama · Color Sort Puzzle
 
-A Flutter 3.3+ offline-friendly **ball sorting** game with 120 reproducible, solver-checked levels.
-Each valid move transports **exactly one** colored ball to an empty tube or a tube whose top ball matches.
+**Game Studio 100 · #003 · Bulmaca ve Zekâ** · Flutter · Android · iOS · Web
 
-## Implemented in source
-- Classic, timed (180 s), daily (UTC) and Zen campaigns
-- Bounded shortest-path hints and reversible moves
-- 120 deterministic puzzles and independent completion checks
-- Local auto-save, continue, best moves, progress and erase-all
-- Turkish, English and Arabic UI; accessibility labels and touch targets
-- Animated glossy balls and responsive bottle layout
-- Local-only privacy default, no enabled tracking or paid SDK
-- Unit and widget tests, Android quality CI and unsigned release compile workflow
+Topları tek tek sırala!
 
-## Development validation
-Run `flutter pub get && flutter analyze --fatal-infos && flutter test` and then
-`flutter build apk --debug`. On macOS, validate iOS using `flutter build ios --no-codesign`.
+## Oyun
 
-**Not release-ready:** real emulator/device tests, signing, full content art/audio, store assets, actual privacy forms, SDK-verified ads/IAP and live publisher review are not confirmed.
-Never close issue #1 without independent evidence.
+Tüplerdeki renkli topları her hamlede bir top taşıyarak sırala.
+
+- **Mekanikler:** gizli toplar, 5 toplu uzun tüpler, tek boş tüp, süreli bölümler
+- **Güçlendiriciler:** ipucu (çözücüden gerçek hamle), geri al, +1 tüp
+- **Modlar:** Macera (50.000+), Sonsuz zincir, Zamana karşı, Zen, Günün/Haftanın bölümü, 150 meydan okuma
+- 9 renge kadar, renk körü sembolleri
+- Her bölüm çözücüyle doğrulanır
+
+## Bütün oyunlarda ortak sistemler
+
+| Sistem | Durum | Dosya |
+|---|---|---|
+| 50.000 bölüm + sonsuz bölüm (seed ile deterministik, her bölüm çözülebilirlik testinden geçer) | ✅ | `lib/core/level_plan.dart`, `lib/game/rules.dart` |
+| 500 dünya, her 10 bölümde zorluk, her 50 bölümde yeni mekanik kombinasyonu, her 100 bölümde tema, her 1000 bölümde özel ödül | ✅ | `lib/core/level_plan.dart` |
+| Oyuncu performansına göre zorluk ayarı | ✅ | `AdaptiveDifficulty` |
+| Modlar: Macera, Sonsuz, Zamana karşı, Zen, Günün bölümü, Haftanın bölümü, 150 meydan okuma | ✅ | `lib/app/screens/home.dart` |
+| Günlük giriş ödülü (7 günlük döngü), seri, şans çarkı, günlük sürpriz, geri dönen oyuncu ödülü | ✅ | `lib/core/daily.dart` |
+| 4 günlük + 7 haftalık görev (tarihe göre otomatik yenilenir), günlük rekor, haftalık kişisel hedef | ✅ | `lib/core/missions.dart` |
+| 200+ başarım (50+ gizli) | ✅ | `lib/core/achievements.dart` |
+| Oyuncu seviyesi 1-500, 5 kademe (Başlangıç → Efsane) | ✅ | `lib/core/progression.dart` |
+| 236 koleksiyon parçası: tema, görünüm, rozet, avatar, çerçeve, efekt | ✅ | `lib/core/collection.dart` |
+| İnternetsiz oyun, otomatik kayıt, 3 yedek + yarım kalan yazmayı kurtarma, checksum, sürüm geçişi, yedek kodu ile dışa/içe aktarma | ✅ | `lib/core/save_store.dart`, `lib/core/save_data.dart` |
+| Uygulama kapanınca bölüme kaldığı yerden devam | ✅ | `resume` |
+| Saat manipülasyonu koruması | ✅ | `lib/core/clock.dart` |
+| Çökme döngüsü algılama → güvenli mod, hata günlüğü, performans ölçümü | ✅ | `lib/core/telemetry.dart` |
+| Acil durum yapılandırması (reklam/satın alma/analitik kapatma) | ✅ | `assets/config/emergency.json` |
+| İzinli, çevrimdışı kuyruklu analitik | ✅ | `AnalyticsQueue` |
+| AdMob: ödüllü + geçiş reklamı, sıklık sınırı, UMP/GDPR rızası, yaş kontrolü | ✅ (test kimlikleri) | `lib/app/services/ads_mobile.dart` |
+| Satın alma: reklamsız, premium, altın, ipucu, başlangıç paketi; doğrulama, geri yükleme, iade, tekrar koruması | ✅ (ürünler mağazada açılmalı) | `lib/core/monetization.dart` |
+| 5 dil (TR, EN, DE, ES, FR), renk körü modu, animasyon azaltma, yazı boyutu, solak düzen, titreşim | ✅ | `lib/core/strings.dart`, Ayarlar |
+| Özgün ikon, splash, ses efektleri, müzik, mağaza görselleri (kodla üretilir) | ✅ | `tool/generate_assets.py` |
+| CI: analiz, testler, APK + AAB, Web; iOS (manuel); haftalık 10.000 bölüm + 24 ay simülasyonu | ✅ | `.github/workflows/` |
+
+## Çalıştırma
+
+```bash
+pip install pillow && python tool/generate_assets.py   # ikon, splash, ses, mağaza görselleri
+flutter create --platforms=android,ios,web --org com.gamestudio100 --project-name game_003_color_sort_puzzle .
+python tool/patch_platforms.py                         # AdMob id, izinler, uygulama adı
+flutter pub get
+dart run flutter_launcher_icons && dart run flutter_native_splash:create
+flutter test
+flutter run                                            # veya: flutter run -d chrome
+```
+
+Uzun testler: `flutter test --dart-define=LONG=true test/long_run_test.dart test/soak_test.dart`
+
+## Yayın öncesi yapılacaklar
+
+`docs/RELEASE.md` dosyasına bak: AdMob kimlikleri, mağaza ürünleri, imzalama anahtarları, gizlilik politikası adresi.
