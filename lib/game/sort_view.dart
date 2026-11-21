@@ -299,7 +299,9 @@ class _Tube extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final seg = (height - 12) / capacity;
+    // Inner height = tube - vertical padding (8 + 4) - top/bottom border.
+    final borderW = hintFrom || hintTo ? 3.0 : 2.0;
+    final seg = (height - 12 - 2 * borderW) / capacity;
     final border = hintFrom || hintTo ? Colors.yellowAccent : Colors.white;
     final tube = Container(
       width: width,
@@ -307,7 +309,7 @@ class _Tube extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(4, 8, 4, 4),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.12),
-        border: Border.all(color: border, width: hintFrom || hintTo ? 3 : 2),
+        border: Border.all(color: border, width: borderW),
         borderRadius: BorderRadius.vertical(
           top: const Radius.circular(6),
           bottom: Radius.circular(width / 2),
@@ -343,7 +345,7 @@ class _Tube extends StatelessWidget {
         ? null
         : Center(child: FittedBox(child: Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))));
     if (balls) {
-      final d = (seg - 4).clamp(8.0, width - 8);
+      final d = (seg - 4).clamp(1.0, (width - 8).clamp(1.0, double.infinity));
       return Container(
         width: d,
         height: d,
