@@ -1,5 +1,5 @@
-import '../core/level_plan.dart';
-import '../core/rng.dart';
+import 'package:studio_core/core/level_plan.dart';
+import 'package:studio_core/core/rng.dart';
 
 /// Shared sorting engine. [pourAll] = true: liquid (the whole top run of
 /// one color pours at once, Water Sort). false: one ball per move.
